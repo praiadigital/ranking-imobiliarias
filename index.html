@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking de Imobiliárias — Transparência no Litoral</title>
+<meta name="description" content="Avalie e compare imobiliárias do litoral paulista: atendimento, estoque, transparência e pós-venda.">
+<style>body{font-family:system-ui;margin:0;background:#f0f9ff;color:#0c4a6e}header{background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff;padding:2rem 1rem;text-align:center}header a{color:#bae6fd}main{max-width:800px;margin:1.5rem auto;padding:0 1rem}.card{background:#fff;border-radius:12px;padding:1.2rem;margin:1rem 0;box-shadow:0 2px 8px rgba(2,132,199,.15)}select{font-size:1rem;padding:.5rem;border-radius:8px;border:1px solid #7dd3fc}.row{display:flex;align-items:center;gap:.7rem;padding:.55rem;border-bottom:1px solid #e0f2fe}.pos{width:26px;font-weight:800;color:#0369a1}.row b{flex:1}.stars{color:#f59e0b}.crit{font-size:.75rem;color:#0369a1}button{background:#e0f2fe;border:0;border-radius:999px;padding:.25rem .7rem;cursor:pointer;font-size:.85rem}button:disabled{opacity:.4}footer{text-align:center;font-size:.85rem;padding:2rem 1rem;color:#0369a1}.net{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.8rem}.net a{background:#e0f2fe;color:#075985;padding:.3rem .6rem;border-radius:999px;text-decoration:none;font-size:.8rem}</style>
+</head>
+<body>
+<header><h1>🏆 Ranking de Imobiliárias</h1><p>Quem atende melhor no litoral? Avaliações de clientes reais, por cidade.</p><a href="https://praia.digital">← praia.digital</a> · <a href="https://praia.digital/apps">Hub de apps</a></header>
+<main>
+<div class="card"><label><b>Cidade:</b></label> <select id="cid" onchange="render()"><option>Guarujá</option><option>Santos</option><option>São Sebastião</option><option>Praia Grande</option><option>Ubatuba</option><option>Bertioga</option></select><div id="list"></div></div>
+<div class="card"><h3>Critérios do ranking</h3><p class="crit">Atendimento (30%) · Estoque e preços honestos (25%) · Documentação impecável (25%) — cruze com o <a href="https://praia.digital/documento-check">Documento Check</a> · Pós-venda (20%)</p></div>
+<div class="card"><h3>Profissionais: entre na rede</h3><p>Corretores e imobiliárias: cadastrem-se no <a href="https://praia.digital/portal-corretores">Portal do Corretor</a> e usem as <a href="https://praia.digital/ferramentas-gratuitas">Ferramentas Gratuitas</a> da rede.</p></div>
+</main>
+<footer><b>Rede Praia Digital</b><div class="net"><a href="https://praia.digital/apps">Hub</a><a href="https://praia.digital/feirao-digital">Feirão Digital</a><a href="https://praia.digital/seguranca-praia">Segurança Praia</a><a href="https://praia.digital/mentor-imobiliario">Mentor</a><a href="https://praia.digital/ranking-praias">Ranking de Praias</a><a href="https://praia.digital/hermes-agents">Hermes Agents</a></div><p>© 2026 Praia Digital</p></footer>
+<script>
+const D={'Guarujá':[['Imobiliária Mar Azul',4.7,312],['Casa Forte Imóveis',4.5,208],['Enseada Prime',4.3,156]],'Santos':[['Gonzaga Imóveis',4.8,521],['Atlântico Negócios',4.6,389],['Ponta da Praia Imóveis',4.2,198]],'São Sebastião':[['Juquehy Prime',4.7,176],['Maresias Houses',4.4,143]],'Praia Grande':[['Boqueirão Negócios',4.3,265],['PG Prime Imóveis',4.1,187]],'Ubatuba':[['Itaguá Imóveis',4.5,134],['Sete Praias',4.2,98]],'Bertioga':[['Riviera Select',4.6,211],['São Lourenço Imóveis',4.4,167]]};
+let votes=JSON.parse(localStorage.getItem('votes-imob')||'{}');
+function render(){
+ const c=document.getElementById('cid').value;
+ const d=D[c].map(x=>({n:x[0],r:x[1],v:x[2]+(votes[c+x[0]]||0)})).sort((a,b)=>b.r*b.v-a.r*a.v);
+ document.getElementById('list').innerHTML=d.map((x,i)=>'<div class="row"><span class="pos">'+(i<3?['🥇','🥈','🥉'][i]:(i+1)+'º')+'</span><b>'+x.n+'</b><span class="stars">★ '+x.r.toFixed(1)+'</span><span style="font-size:.8rem">'+x.v+' avaliações</span><button '+(votes[c+x.n]?'disabled':'')+' onclick="vote(\''+c+'\',\''+x.n.replace(/'/g,"")+'\')">Avaliar 👍</button></div>').join('');
+}
+function vote(c,n){votes[c+n]=1;localStorage.setItem('votes-imob',JSON.stringify(votes));render();}
+render();
+</script>
+</body>
+</html>
